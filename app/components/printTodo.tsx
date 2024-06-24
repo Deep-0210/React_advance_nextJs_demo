@@ -1,16 +1,19 @@
 "use client"
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { SetStateAction, useEffect, useState } from 'react'
 import Table from '@mui/material/Table'
 import { Paper, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
-import { Button, Dialog, DialogHeader, DialogBody } from "@material-tailwind/react"
+import { Button } from "@material-tailwind/react"
+import { Data } from '@/types/type'
+import ConfirmationModal from './confirmationModal'
 
-const PrintTodo = () => {
+const PrintTodo = ({ setEditTodo, reApiCall }: { setEditTodo: React.Dispatch<SetStateAction<any>>, reApiCall: number }) => {
     const route = useRouter();
     const [todo, setTodo] = useState([])
 
-    useEffect(() => {
+    // function to call the api to get the todo list
+    const getData = () => {
         axios.get('/api/todo', {
             headers: {
                 token: localStorage.getItem('token')
@@ -26,11 +29,34 @@ const PrintTodo = () => {
             }
             console.log(err)
         })
-    }, [])
+    };
+
+    useEffect(() => {
+        if (reApiCall === 1) {
+            getData()
+        }
+    }, [reApiCall])
+
+    useEffect(() => {
+        getData()
+    }, []);
+
+    // function to get the data for edit todo
+    const editTodo = (e: React.MouseEvent<HTMLButtonElement>) => {
+        const id = (e.target as HTMLButtonElement).id
+        const data: any = todo?.find((e: Data) => e?._id === id)
+        setEditTodo({ todo: data?.todo, _id: data?._id, edit: true })
+    };
+
+    // function to get todo data for delete
+    const deleteTodo = (e: React.MouseEvent<HTMLButtonElement>) => {
+        const id = (e.target as HTMLButtonElement).id
+        console.log(id, 'delete')
+    };
 
     return (
         <div>
-            <div className={`${todo?.length === 0 ? 'hidden' : ''}`}>
+            <div>
                 {todo?.length > 0 && <TableContainer component={Paper} style={{ backgroundColor: 'transparent' }}>
                     <Table>
                         <TableHead>
@@ -52,7 +78,7 @@ const PrintTodo = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {todo.map((e, i) => {
+                            {todo.map((e: any, i) => {
                                 return (
                                     <TableRow key={++i}>
                                         {Object.values(e).map((a, j) => {
@@ -67,10 +93,10 @@ const PrintTodo = () => {
                                         <TableCell scope="row" align="center" sx={{ border: 2, borderColor: 'white' }} >
                                             <div className="flex justify-center w-max mx-auto">
                                                 <div className="me-3">
-                                                    <Button placeholder={'edit'} variant='filled' color="green" type='submit'>Edit</Button>
+                                                    <button className="bg-green-700 px-6 py-3 rounded-lg text-white font-semibold" id={e?._id} onClick={(e) => editTodo(e)}>EDIT</button>
                                                 </div>
                                                 <div className="ms-3">
-                                                    <Button placeholder={'delete'} variant='filled' color="red" type='submit'>Delete</Button>
+                                                    <button className="bg-red-700 px-6 py-3 rounded-lg text-white font-semibold" id={e?._id} onClick={(e) => deleteTodo(e)}>DELETE</button>
                                                 </div>
                                             </div>
                                         </TableCell>
@@ -81,6 +107,8 @@ const PrintTodo = () => {
                     </Table>
                 </TableContainer>}
             </div>
+
+            <ConfirmationModal />
         </div>
     )
 }

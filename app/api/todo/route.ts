@@ -134,7 +134,7 @@ export const PUT = async (req: NextRequest) => {
                     if (todoData) {
                         await addTodoModel.findByIdAndUpdate(todoData?._id, { todo: data.todo }, { new: true });
 
-                        return new Response(JSON.stringify({ "message": "Data Updated" }), {
+                        return new Response(JSON.stringify({ "updated": "Data Updated" }), {
                             status: 200,
                             headers: {
                                 'Content-Type': 'application/json',

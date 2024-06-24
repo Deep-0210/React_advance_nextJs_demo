@@ -14,3 +14,14 @@ export interface Middleware {
     },
     valid: boolean
 }
+
+export interface EditTodo {
+    todo: string
+    _id: string
+    edit: boolean
+}
+
+export interface Data {
+    todo: string
+    _id: string
+}
