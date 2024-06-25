@@ -1,33 +1,73 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Dialog, DialogHeader, DialogBody, DialogFooter } from "@material-tailwind/react";
+import { Data } from '@/types/type';
+import axios from 'axios';
+import { headers } from 'next/headers';
+import { useRouter } from 'next/navigation';
 
-const ConfirmationModal = () => {
+const ConfirmationModal = ({ confirmationModal, resetModalValue, deleteData }: { confirmationModal: number, resetModalValue: Function, deleteData: Data }) => {
     const [open, setOpen] = useState(false);
+    const route = useRouter()
 
-    const handleOpen = () => setOpen(!open);
+    // function to open and close the modal
+    const handleOpen = () => {
+        setOpen(!open);
+        resetModalValue(0)
+    };
+
+    /**
+     * useEffect will trigger when the @param confirmationModal value will change
+    */
+    useEffect(() => {
+        if (confirmationModal === 1) {
+            setOpen(!open);
+        }
+    }, [confirmationModal]);
+
+    // function to delete todo
+    const deleteTodo = () => {
+        // Delete a todo with the given ID
+        const data = {
+            id: deleteData?._id
+        };
+
+        const config = {
+            headers: {
+                token: localStorage.getItem('token')
+            },
+            data: data
+        }
+
+        axios.delete('/api/todo', config).then((res) => {
+            if(res.data?.removed){
+                setOpen(!open);
+                resetModalValue(1)
+            }
+        }).catch((err) => {
+            if (err.response.status === 401) {
+                localStorage.removeItem('token')
+                route.push('/')
+            }
+            console.error(err);
+        });
+
+    }
+
     return (
         <div>
-            <Dialog open={open} handler={handleOpen} placeholder={'mainClass'}>
-                <DialogHeader placeholder={'title'} children={'Its a simple dialog.'} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></DialogHeader>
-                <DialogBody placeholder={'description'}>
-                    The key to more success is to have a lot of pillows. Put it this way,
-                    it took me twenty five years to get these plants, twenty five years of
-                    blood sweat and tears, and I&apos;m never giving up, I&apos;m just
-                    getting started. I&apos;m up to something. Fan luv.
+            <Dialog open={open} handler={handleOpen} placeholder={'mainClass'} >
+                <DialogHeader placeholder={'title'} children={'Delete Todo'} />
+                <DialogBody placeholder={'description'} >
+                    Are you sure want to delete {deleteData?.todo}
                 </DialogBody>
-                <DialogFooter>
+                <DialogFooter placeholder={'footer'} >
                     <Button
                         variant="text"
                         color="red"
                         onClick={handleOpen}
-                        className="mr-1"
-                    >
-                        <span>Cancel</span>
-                    </Button>
-                    <Button variant="gradient" color="green" onClick={handleOpen}>
-                        <span>Confirm</span>
-                    </Button>
+                        className="mr-1" children={'cancel'} placeholder={'cancel'} />
+                    <Button variant="gradient" color="green" onClick={deleteTodo} children={'delete'} placeholder={'delete'} />
                 </DialogFooter>
             </Dialog>
         </div>

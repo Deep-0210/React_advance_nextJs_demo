@@ -114,7 +114,7 @@ const UserTodo = () => {
     }, [editTodo])
 
     return (
-        <div className="bg-[#031d4e] w-full h-[100%]">
+        <div className="bg-[#031d4e] w-full h-screen">
             <div className='flex justify-end p-2.5'>
                 <button className="bg-green-700 p-2 rounded-lg text-white" onClick={userLogOut}>Log-Out</button>
             </div>

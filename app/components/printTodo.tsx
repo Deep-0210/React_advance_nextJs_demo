@@ -4,13 +4,16 @@ import { useRouter } from 'next/navigation'
 import React, { SetStateAction, useEffect, useState } from 'react'
 import Table from '@mui/material/Table'
 import { Paper, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
-import { Button } from "@material-tailwind/react"
 import { Data } from '@/types/type'
 import ConfirmationModal from './confirmationModal'
+import Message from './message'
 
 const PrintTodo = ({ setEditTodo, reApiCall }: { setEditTodo: React.Dispatch<SetStateAction<any>>, reApiCall: number }) => {
     const route = useRouter();
     const [todo, setTodo] = useState([])
+    const [confirmationModal, setConfirmationModal] = useState<number>(0)
+    const [deleteData, setDeleteData] = useState<Data>({ todo: "", _id: "" })
+    const [successMessage, setSuccessMessage] = useState<string>('')
 
     // function to call the api to get the todo list
     const getData = () => {
@@ -51,7 +54,21 @@ const PrintTodo = ({ setEditTodo, reApiCall }: { setEditTodo: React.Dispatch<Set
     // function to get todo data for delete
     const deleteTodo = (e: React.MouseEvent<HTMLButtonElement>) => {
         const id = (e.target as HTMLButtonElement).id
-        console.log(id, 'delete')
+        setConfirmationModal(1)
+        const data: any = todo?.find((e: Data) => e?._id === id)
+        setDeleteData(data)
+    };
+
+    // function to reset the modal value
+    const resetModalValue = (e: number) => {
+        if (e === 1) {
+            getData();
+            setSuccessMessage("Data removed successfully!!")
+            setTimeout(() => {
+                setSuccessMessage('')
+            }, 1000)
+        }
+        setConfirmationModal(0);
     };
 
     return (
@@ -108,7 +125,9 @@ const PrintTodo = ({ setEditTodo, reApiCall }: { setEditTodo: React.Dispatch<Set
                 </TableContainer>}
             </div>
 
-            <ConfirmationModal />
+            <ConfirmationModal confirmationModal={confirmationModal} resetModalValue={resetModalValue} deleteData={deleteData} />
+
+            <Message errorMessage='' successMessage={successMessage} />
         </div>
     )
 }

@@ -177,7 +177,7 @@ export const DELETE = async (req: NextRequest) => {
                 if (todoData) {
                     await addTodoModel.findByIdAndDelete(todoData?._id);
 
-                    return new Response(JSON.stringify({ "message": "Data removed" }), {
+                    return new Response(JSON.stringify({ "removed": "Data removed" }), {
                         status: 200,
                         headers: {
                             'Content-Type': 'application/json',
