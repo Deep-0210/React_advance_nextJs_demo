@@ -114,33 +114,35 @@ const UserTodo = () => {
     }, [editTodo])
 
     return (
-        <div className="bg-[#031d4e] w-full h-screen">
-            <div className='flex justify-end p-2.5'>
-                <button className="bg-green-700 p-2 rounded-lg text-white" onClick={userLogOut}>Log-Out</button>
-            </div>
+        <div className='h-full'>
+            <div className="bg-[#031d4e] w-full h-full">
+                <div className='flex justify-end p-2.5'>
+                    <button className="bg-green-700 p-2 rounded-lg text-white" onClick={userLogOut}>Log-Out</button>
+                </div>
 
-            <div className="w-full pt-10">
-                <div className="text-white text-4xl align-middle w-full text-center">Todo</div>
-                <form onSubmit={handleSubmit}>
-                    <div className="w-max border border-white rounded-lg p-4 mx-auto mt-10">
-                        <div className="mb-5 mt-1">
-                            <input type="text" name="userTodo" id="userTodo" value={values?.userTodo} className={`h-8 rounded-lg px-2 ${touched.userTodo && errors.userTodo ? 'border-2 border-red-700' : ''}`} placeholder="Todo" onChange={handleChange} onBlur={handleBlur} />
-                        </div>
+                <div className="w-full pt-10 h-full">
+                    <div className="text-white text-4xl align-middle w-full text-center">Todo</div>
+                    <form onSubmit={handleSubmit}>
+                        <div className="w-max border border-white rounded-lg p-4 mx-auto mt-10">
+                            <div className="mb-5 mt-1">
+                                <input type="text" name="userTodo" id="userTodo" value={values?.userTodo} className={`h-8 rounded-lg px-2 ${touched.userTodo && errors.userTodo ? 'border-2 border-red-700' : ''}`} placeholder="Todo" onChange={handleChange} onBlur={handleBlur} />
+                            </div>
 
-                        <div className="mt-5 w-max mx-auto">
-                            {(editTodo?._id && editTodo?.edit) ?
-                                <button className="bg-green-700 p-2 rounded-lg" type="submit">Update</button>
-                                :
-                                <button className="bg-green-700 p-2 rounded-lg" type="submit">Add</button>
-                            }
+                            <div className="mt-5 w-max mx-auto">
+                                {(editTodo?._id && editTodo?.edit) ?
+                                    <button className="bg-green-700 p-2 rounded-lg" type="submit">Update</button>
+                                    :
+                                    <button className="bg-green-700 p-2 rounded-lg" type="submit">Add</button>
+                                }
+                            </div>
                         </div>
+                    </form>
+
+                    <Message successMessage={successMessage} errorMessage={errorMessage} />
+
+                    <div className='mt-20'>
+                        <PrintTodo setEditTodo={setEditTodo} reApiCall={reApiCall} setSuccessMessage={setSuccessMessage}/>
                     </div>
-                </form>
-
-                <Message successMessage={successMessage} errorMessage={errorMessage} />
-
-                <div className='mt-20'>
-                    <PrintTodo setEditTodo={setEditTodo} reApiCall={reApiCall} />
                 </div>
             </div>
         </div>

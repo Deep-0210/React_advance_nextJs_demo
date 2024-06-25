@@ -16,6 +16,7 @@ const Message = React.memo(({ successMessage, errorMessage }: { successMessage: 
 
     useEffect(() => {
         if (successMessage?.length) {
+            console.log('...')
             toast.success(`${successMessage}`, {
                 className: "login-toast",
                 position: 'bottom-left',
@@ -23,6 +24,7 @@ const Message = React.memo(({ successMessage, errorMessage }: { successMessage: 
             });
         }
     }, [successMessage])
+
     return (
         <div>
             <ToastContainer />

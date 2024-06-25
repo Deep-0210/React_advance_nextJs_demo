@@ -8,12 +8,11 @@ import { Data } from '@/types/type'
 import ConfirmationModal from './confirmationModal'
 import Message from './message'
 
-const PrintTodo = ({ setEditTodo, reApiCall }: { setEditTodo: React.Dispatch<SetStateAction<any>>, reApiCall: number }) => {
+const PrintTodo = ({ setEditTodo, reApiCall, setSuccessMessage }: { setEditTodo: React.Dispatch<SetStateAction<any>>, reApiCall: number, setSuccessMessage: React.Dispatch<SetStateAction<string>> }) => {
     const route = useRouter();
     const [todo, setTodo] = useState([])
     const [confirmationModal, setConfirmationModal] = useState<number>(0)
     const [deleteData, setDeleteData] = useState<Data>({ todo: "", _id: "" })
-    const [successMessage, setSuccessMessage] = useState<string>('')
 
     // function to call the api to get the todo list
     const getData = () => {
@@ -81,8 +80,8 @@ const PrintTodo = ({ setEditTodo, reApiCall }: { setEditTodo: React.Dispatch<Set
                                 {Object.keys(todo[0]).map((d, j) => {
                                     return (
                                         <TableCell key={++j} sx={{ border: 2, borderColor: 'white' }} align="center">
-                                            <span className="text-xl font-semibold text-white">
-                                                {d}
+                                            <span className="text-xl font-semibold text-white capitalize">
+                                                {d === "_id" ? "No" : d}
                                             </span>
                                         </TableCell>
                                     )
@@ -126,8 +125,6 @@ const PrintTodo = ({ setEditTodo, reApiCall }: { setEditTodo: React.Dispatch<Set
             </div>
 
             <ConfirmationModal confirmationModal={confirmationModal} resetModalValue={resetModalValue} deleteData={deleteData} />
-
-            <Message errorMessage='' successMessage={successMessage} />
         </div>
     )
 }
