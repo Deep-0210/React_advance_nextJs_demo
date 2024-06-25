@@ -12,7 +12,7 @@ import Message from "./components/message";
 export default function Home() {
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
-  const router = useRouter()
+  // const router = useRouter()
 
   // function to manage the password hide and show text
   const handleHideShowPassword = () => {
@@ -61,7 +61,7 @@ export default function Home() {
       }
       if (res.data.token) {
         localStorage.setItem('token', res?.data?.token)
-        router.push('/todo')
+        // router.push('/todo')
         resetForm()
       }
     }).catch((err) => {
@@ -71,7 +71,7 @@ export default function Home() {
       }, 1000)
       console.log(err)
     })
-  }
+  };
 
   return (
     <div className="bg-[#031d4e]">
@@ -85,7 +85,7 @@ export default function Home() {
           <div className="w-max border border-white rounded-lg p-4 mx-auto mt-10">
             <span className={`text-sm ${touched?.userEmail && errors?.userEmail ? 'text-red-700 font-semibold' : 'text-white'}`}>Email</span>
             <div className="mb-5 mt-1">
-              <input type="email" name="userEmail" id="userEmail" className={`h-8 rounded-lg px-2 ${touched.userEmail && errors.userEmail ? 'border-2 border-red-700' : ''}`} placeholder="Email" onChange={handleChange} onBlur={handleBlur} />
+              <input type="email" name="userEmail" id="userEmail" className={`h-8 rounded-lg px-2 ${touched.userEmail && errors.userEmail ? 'border-2 border-red-700' : ''}`} data-testid="ok-email" placeholder="Email" onChange={handleChange} onBlur={handleBlur} />
             </div>
 
             <span className={`text-sm ${touched?.userPassword && errors?.userPassword ? 'text-red-700 font-semibold' : 'text-white'}`}>Password</span>
@@ -106,7 +106,7 @@ export default function Home() {
         </form>
       </div>
 
-      <Message errorMessage={errorMessage} successMessage="" />
+      {/* <Message errorMessage={errorMessage} successMessage="" /> */}
     </div>
   );
 }
