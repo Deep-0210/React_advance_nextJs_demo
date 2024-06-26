@@ -1,18 +1,11 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import LogIn from '../page'
-import axios from 'axios';
-jest.mock('axios')
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import SignUp from "../signUp/page";
+import axios from "axios";
 const mockedAxios = axios as jest.Mocked<typeof axios>;
-
-
-test('LogIn text', () => {
-    render(<LogIn />)
-    const element = screen.getByText(/Log-In/i)
-    expect(element).toBeInTheDocument
-});
+jest.mock('axios')
 
 test('email input', async () => {
-    render(<LogIn />)
+    render(<SignUp />)
     const element = screen.getByPlaceholderText("Email")
     expect(element).toBeInTheDocument;
     expect(element).toHaveAttribute("type", "email");
@@ -20,7 +13,7 @@ test('email input', async () => {
 });
 
 test("password input", () => {
-    render(<LogIn />)
+    render(<SignUp />)
     const element = screen.getByPlaceholderText("Password")
     expect(element).toBeInTheDocument;
     expect(element).toHaveAttribute("type", "password");
@@ -28,7 +21,7 @@ test("password input", () => {
 })
 
 test("validation check", async () => {
-    const { getByPlaceholderText, getByText } = render(<LogIn />);
+    const { getByPlaceholderText, getByText } = render(<SignUp />);
 
     const emailInput = getByPlaceholderText("Email");
     const passwordInput = getByPlaceholderText("Password");
@@ -48,24 +41,27 @@ test("validation check", async () => {
     });
 });
 
-test('api call for log-in', async () => {
-    mockedAxios.post.mockResolvedValueOnce({ data: { message: "User not found" } })
+test("api call for sign-up", async () => {
+    mockedAxios.post.mockResolvedValueOnce({ data: { userExist: "User Exist" } });
 
-    const { getByPlaceholderText, getByText } = render(<LogIn />);
+    const { getByPlaceholderText, getByText } = render(<SignUp />);
 
-    const emailInput = getByPlaceholderText("Email")
-    const passwordInput = getByPlaceholderText("Password")
-    const submitButton = getByText("Submit")
+    const emailInput = getByPlaceholderText("Email");
+    const passwordInput = getByPlaceholderText("Password");
+    const submitButton = getByText("Submit");
 
-    fireEvent.change(emailInput, { target: { value: 'deep4853867@gmail.com' } });
+    fireEvent.change(emailInput, { target: { value: 'deep485386@gmail.com' } });
     fireEvent.change(passwordInput, { target: { value: 'Deep@123' } });
-
     fireEvent.click(submitButton);
-    const tostMessage = screen.getByTestId("tost-message")
-
 
     await waitFor(() => {
-        expect(mockedAxios.post).toHaveBeenCalledTimes(1)
-        expect(tostMessage.textContent).toBe("User not found!!")
-    })
-})
+        expect(mockedAxios.post).toHaveBeenCalledTimes(1);
+        expect(mockedAxios.post).toHaveBeenCalledWith('/api/signUp', {
+            email: 'deep485386@gmail.com',
+            password: 'Deep@123'
+        });
+
+        const toastMessage = screen.getByTestId("tost-message");
+        expect(toastMessage.textContent).toBe("User Exist");
+    });
+});
