@@ -93,10 +93,10 @@ const PrintTodo = ({ setEditTodo, reApiCall, setSuccessMessage }: { setEditTodo:
                                 </TableCell>
                             </TableRow>
                         </TableHead>
-                        <TableBody>
+                        <TableBody data-testid="table-body">
                             {todo.map((e: any, i) => {
                                 return (
-                                    <TableRow key={++i}>
+                                    <TableRow key={++i} data-testid="row">
                                         {Object.values(e).map((a, j) => {
                                             return (
                                                 <TableCell key={++j} scope="row" align="center" sx={{ border: 2, borderColor: 'white' }}>

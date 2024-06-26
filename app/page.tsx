@@ -12,7 +12,7 @@ import Message from "./components/message";
 export default function Home() {
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
-  // const router = useRouter()
+  const router = useRouter()
 
   // function to manage the password hide and show text
   const handleHideShowPassword = () => {
@@ -61,7 +61,7 @@ export default function Home() {
       }
       if (res.data.token) {
         localStorage.setItem('token', res?.data?.token)
-        // router.push('/todo')
+        router.push('/todo')
         resetForm()
       }
     }).catch((err) => {
@@ -106,7 +106,7 @@ export default function Home() {
         </form>
       </div>
 
-      {/* <Message errorMessage={errorMessage} successMessage="" /> */}
+      <Message errorMessage={errorMessage} successMessage="" />
     </div>
   );
 }

@@ -26,7 +26,7 @@ const Message = React.memo(({ successMessage, errorMessage }: { successMessage: 
     }, [successMessage])
 
     return (
-        <div>
+        <div data-testid="tost-message">
             <ToastContainer />
         </div>
     )
