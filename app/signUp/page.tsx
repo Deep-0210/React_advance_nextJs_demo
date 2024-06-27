@@ -12,7 +12,7 @@ import Message from "../components/message";
 export default function SignUp() {
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string>('')
-    const router = useRouter();
+    // const router = useRouter();
 
     // function to manage the password hide and show text
     const handleHideShowPassword = () => {
@@ -50,7 +50,7 @@ export default function SignUp() {
             if (res?.data?.token) {
                 localStorage.setItem('token', res?.data?.token)
                 resetForm()
-                router.push('/todo')
+                // router.push('/todo')
             }
             if (res?.data?.userExist) {
                 setErrorMessage("User Exist");
@@ -79,12 +79,12 @@ export default function SignUp() {
                     <div className="w-max border border-white rounded-lg p-4 mx-auto mt-10">
                         <span className={`text-sm ${touched?.userEmail && errors?.userEmail ? 'text-red-700 font-semibold' : 'text-white'}`}>Email</span>
                         <div className="mb-5 mt-1">
-                            <input type="email" name="userEmail" id="userEmail" className={`h-8 rounded-lg px-2 ${touched.userEmail && errors.userEmail ? 'border-2 border-red-700' : ''}`} placeholder="Email" onChange={handleChange} onBlur={handleBlur} />
+                            <input type="email" name="userEmail" id="userEmail" className={`h-8 rounded-lg px-2 ${touched.userEmail && errors.userEmail ? 'border-2 border-red-700' : ''}`} placeholder="Email" data-testid="ok-email" onChange={handleChange} onBlur={handleBlur} />
                         </div>
 
                         <span className={`text-sm ${touched?.userPassword && errors?.userPassword ? 'text-red-700 font-semibold' : 'text-white'}`}>Password</span>
                         <div className="mb-5 mt-1 relative">
-                            <input type={showPassword ? 'text' : 'password'} name="userPassword" id="userPassword" className={`h-8 rounded-lg px-2 ${touched?.userPassword && errors?.userPassword ? 'border-2 border-red-700' : ''}`} placeholder="Password" onChange={handleChange} onBlur={handleBlur} />
+                            <input type={showPassword ? 'text' : 'password'} name="userPassword" id="userPassword" className={`h-8 rounded-lg px-2 ${touched?.userPassword && errors?.userPassword ? 'border-2 border-red-700' : ''}`} data-testid="ok-password" placeholder="Password" onChange={handleChange} onBlur={handleBlur} />
 
                             <div className="absolute top-0 right-0 pe-5 mt-2 cursor-pointer" onClick={handleHideShowPassword}>
                                 {showPassword ? <div><BsEyeSlash /></div> : <div className="">

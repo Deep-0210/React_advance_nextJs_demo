@@ -12,7 +12,7 @@ import Message from "./components/message";
 export default function Home() {
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
-  const router = useRouter()
+  // const router = useRouter()
 
   // function to manage the password hide and show text
   const handleHideShowPassword = () => {
@@ -61,7 +61,7 @@ export default function Home() {
       }
       if (res.data.token) {
         localStorage.setItem('token', res?.data?.token)
-        router.push('/todo')
+        // router.push('/todo')
         resetForm()
       }
     }).catch((err) => {
@@ -90,13 +90,13 @@ export default function Home() {
 
             <span className={`text-sm ${touched?.userPassword && errors?.userPassword ? 'text-red-700 font-semibold' : 'text-white'}`}>Password</span>
             <div className="mb-5 mt-1 relative">
-              <input type={showPassword ? 'text' : 'password'} name="userPassword" id="userPassword" className={`h-8 rounded-lg px-2 ${touched?.userPassword && errors?.userPassword ? 'border-2 border-red-700' : ''}`} placeholder="Password" onChange={handleChange} onBlur={handleBlur} />
+              <input type={showPassword ? 'text' : 'password'} name="userPassword" id="userPassword" className={`h-8 rounded-lg px-2 ${touched?.userPassword && errors?.userPassword ? 'border-2 border-red-700' : ''}`} placeholder="Password" data-testid="ok-password" onChange={handleChange} onBlur={handleBlur} />
 
-              <div className="absolute top-0 right-0 pe-5 mt-2 cursor-pointer" onClick={handleHideShowPassword}>
+              {/* <div className="absolute top-0 right-0 pe-5 mt-2 cursor-pointer" onClick={handleHideShowPassword}>
                 {showPassword ? <div><BsEyeSlash /></div> : <div className="">
                   <BsEye />
                 </div>}
-              </div>
+              </div> */}
             </div>
 
             <div className="mt-8 w-max mx-auto">

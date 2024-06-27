@@ -9,7 +9,7 @@ import ConfirmationModal from './confirmationModal'
 import Message from './message'
 
 const PrintTodo = ({ setEditTodo, reApiCall, setSuccessMessage }: { setEditTodo: React.Dispatch<SetStateAction<any>>, reApiCall: number, setSuccessMessage: React.Dispatch<SetStateAction<string>> }) => {
-    const route = useRouter();
+    // const route = useRouter();
     const [todo, setTodo] = useState([])
     const [confirmationModal, setConfirmationModal] = useState<number>(0)
     const [deleteData, setDeleteData] = useState<Data>({ todo: "", _id: "" })
@@ -27,7 +27,7 @@ const PrintTodo = ({ setEditTodo, reApiCall, setSuccessMessage }: { setEditTodo:
         }).catch((err) => {
             if (err.response.status === 401) {
                 localStorage.removeItem('token')
-                route.push('/')
+                // route.push('/')
             }
             console.log(err)
         })
@@ -124,7 +124,7 @@ const PrintTodo = ({ setEditTodo, reApiCall, setSuccessMessage }: { setEditTodo:
                 </TableContainer>}
             </div>
 
-            <ConfirmationModal confirmationModal={confirmationModal} resetModalValue={resetModalValue} deleteData={deleteData} />
+            {/* <ConfirmationModal confirmationModal={confirmationModal} resetModalValue={resetModalValue} deleteData={deleteData} /> */}
         </div>
     )
 }
