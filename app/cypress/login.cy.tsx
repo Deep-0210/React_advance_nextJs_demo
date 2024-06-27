@@ -38,11 +38,17 @@ describe('Log-In test cases', () => {
         cy.get('[data-testid="ok-email"]').should('have.class', 'border-2 border-red-700');
     });
 
-    it('api call for log-in', () => {
-        // Intercept the API call and mock the response
-        cy.intercept('POST', '/api/login', {
-            statusCode: 200,
-            body: { message: "User not found" },
+    it('api call for log-in with invalid credentials', () => {
+        cy.intercept('POST', '/api/logIn', (req) => {
+            console.log('Request intercepted:', req);
+            expect(req.body).to.deep.equal({
+                email: 'deep485386@gmail.com',
+                password: 'Deep@1234'
+            });
+            req.reply({
+                statusCode: 200,
+                body: { message: "Please check your email or password" }
+            });
         }).as('loginRequest');
 
         mount(<LogIn />);
@@ -51,20 +57,17 @@ describe('Log-In test cases', () => {
         const passwordInput = cy.get('input[placeholder="Password"]');
         const submitButton = cy.contains('Submit');
 
-        // Simulate user input
-        emailInput.type('deep4853867@gmail.com');
-        passwordInput.type('Deep@123');
+        emailInput.type('deep485386@gmail.com');
+        passwordInput.type('Deep@1234');
 
-        // Simulate form submission
         submitButton.click();
 
-        // Wait for the API call and assert on its results
         cy.wait('@loginRequest').then((interception) => {
+            console.log('Interception:', interception);
             expect(interception.response.statusCode).to.equal(200);
-            expect(interception.response.body.message).to.equal('User not found');
+            expect(interception.response.body.message).to.equal('Please check your email or password');
         });
 
-        // Assert on the toast message
-        cy.get('[data-testid="tost-message"]').should('have.text', 'User not found!!');
+        cy.get('[data-testid="tost-message"]').should('have.text', 'Invalid Credentials!!');
     });
 })
