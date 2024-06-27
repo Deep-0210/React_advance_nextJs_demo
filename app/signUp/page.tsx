@@ -86,11 +86,11 @@ export default function SignUp() {
                         <div className="mb-5 mt-1 relative">
                             <input type={showPassword ? 'text' : 'password'} name="userPassword" id="userPassword" className={`h-8 rounded-lg px-2 ${touched?.userPassword && errors?.userPassword ? 'border-2 border-red-700' : ''}`} data-testid="ok-password" placeholder="Password" onChange={handleChange} onBlur={handleBlur} />
 
-                            <div className="absolute top-0 right-0 pe-5 mt-2 cursor-pointer" onClick={handleHideShowPassword}>
+                            {/* <div className="absolute top-0 right-0 pe-5 mt-2 cursor-pointer" onClick={handleHideShowPassword}>
                                 {showPassword ? <div><BsEyeSlash /></div> : <div className="">
                                     <BsEye />
                                 </div>}
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className="mt-8 w-max mx-auto">

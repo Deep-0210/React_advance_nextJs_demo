@@ -1,5 +1,5 @@
 import React = require('react');
-import LogIn from '../page'
+import LogIn from '../../page'
 import { mount } from '@cypress/react';
 
 describe('Log-In test cases', () => {
@@ -70,4 +70,36 @@ describe('Log-In test cases', () => {
 
         cy.get('[data-testid="tost-message"]').should('have.text', 'Invalid Credentials!!');
     });
+
+    it("Check for user not found", async () => {
+        cy.intercept('post', '/api/logIn', (req) => {
+            expect(req.body).to.deep.equal({
+                email: 'deep4853867@gmail.com',
+                password: 'Deep@123'
+            });
+            req.reply({
+                statusCode: 200,
+                body: { message: "User not found" }
+            });
+        }).as('logInRequest')
+
+        mount(<LogIn />);
+
+        const emailInput = cy.get('input[placeholder="Email"]');
+        const passwordInput = cy.get('input[placeholder="Password"]');
+        const submitButton = cy.contains('Submit');
+
+        emailInput.type('deep4853867@gmail.com');
+        passwordInput.type('Deep@123');
+
+        submitButton.click();
+
+        cy.wait('@loginRequest').then((interception) => {
+            console.log('Interception:', interception);
+            expect(interception.response.statusCode).to.equal(200);
+            expect(interception.response.body.message).to.equal('User not found');
+        });
+
+        cy.get('[data-testid="tost-message"]').should('have.text', 'User not found!!');
+    })
 })
